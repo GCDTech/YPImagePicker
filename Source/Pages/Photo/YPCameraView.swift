@@ -30,10 +30,10 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 overlayView,
                 progressBar,
                 timeElapsedLabel,
-                flashButton,
-                flipButton,
                 buttonsContainer.sv(
-                    shotButton
+                    flashButton,
+                    shotButton,
+                    flipButton
                 )
             )
         } else {
@@ -42,10 +42,10 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 previewViewContainer,
                 progressBar,
                 timeElapsedLabel,
-                flashButton,
-                flipButton,
                 buttonsContainer.sv(
-                    shotButton
+                    flashButton,
+                    shotButton,
+                    flipButton
                 )
             )
         }
@@ -66,17 +66,22 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
 
         overlayView?.followEdges(previewViewContainer)
 
-        |-(15+sideMargin)-flashButton.size(42)
-        flashButton.Bottom == previewViewContainer.Bottom - 15
-
-        flipButton.size(42)-(15+sideMargin)-|
-        flipButton.Bottom == previewViewContainer.Bottom - 15
+//        |-(15+sideMargin)-flashButton.size(42)
+//        flashButton.Bottom == previewViewContainer.Bottom - 15
+//
+//        flipButton.size(42)-(15+sideMargin)-|
+//        flipButton.Bottom == previewViewContainer.Bottom - 15
         
         timeElapsedLabel-(15+sideMargin)-|
         timeElapsedLabel.Top == previewViewContainer.Top + 15
         
         shotButton.centerVertically()
         shotButton.size(84).centerHorizontally()
+
+        flashButton.size(42).centerVertically()
+        flipButton.size(42).centerVertically()
+        
+        align(horizontally: |-flashButton-40-shotButton-40-flipButton-|)
 
         // Style
         backgroundColor = YPConfig.colors.photoVideoScreenBackground
