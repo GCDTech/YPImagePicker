@@ -91,6 +91,7 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
             p.trackTintColor = .clear
             p.tintColor = .red
         }
+        buttonsContainer.backgroundColor = YPConfig.colors.photoVideoButtonContainerBackground
         flashButton.setImage(YPConfig.icons.flashOffIcon, for: .normal)
         flipButton.setImage(YPConfig.icons.loopIcon, for: .normal)
         shotButton.setImage(YPConfig.icons.capturePhotoImage, for: .normal)

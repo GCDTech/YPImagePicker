@@ -26,6 +26,9 @@ public struct YPColors {
     /// The background color of the bottom of photo and video screens.
     public var photoVideoScreenBackground: UIColor = .white
     
+    /// The background color of the buttons container of the photo and video screens.
+    public var photoVideoButtonContainerBackground: UIColor = .white
+    
     // MARK: - Trimmer
     
     /// The color of the main border of the view
