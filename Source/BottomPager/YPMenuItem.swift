@@ -13,6 +13,7 @@ final class YPMenuItem: UIView {
     
     var textLabel = UILabel()
     var button = UIButton()
+    var bottomSeparator = UIView()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -33,13 +34,13 @@ final class YPMenuItem: UIView {
         
         sv(
             textLabel,
-            button
+            button,
+            bottomSeparator
         )
         
         textLabel.centerInContainer()
         |-(10)-textLabel-(10)-|
         button.fillContainer()
-        
         textLabel.style { l in
             l.textAlignment = .center
             l.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
@@ -47,6 +48,10 @@ final class YPMenuItem: UIView {
             l.adjustsFontSizeToFitWidth = true
             l.numberOfLines = 2
         }
+        bottomSeparator.bottom(0)
+        bottomSeparator.height(3)
+        align(lefts: bottomSeparator, textLabel)
+        align(rights: bottomSeparator, textLabel)
     }
     
     func selectedColor() -> UIColor {
@@ -59,9 +64,13 @@ final class YPMenuItem: UIView {
     
     func select() {
         textLabel.textColor = selectedColor()
+        bottomSeparator.backgroundColor = selectedColor()
+        bottomSeparator.isHidden = false
     }
     
     func deselect() {
         textLabel.textColor = unselectedColor()
+        bottomSeparator.backgroundColor = unselectedColor()
+        bottomSeparator.isHidden = true
     }
 }
