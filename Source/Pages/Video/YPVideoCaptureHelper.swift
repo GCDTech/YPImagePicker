@@ -105,7 +105,9 @@ class YPVideoCaptureHelper: NSObject {
     // MARK: - Focus
     
     public func focus(onPoint point: CGPoint) {
-        setFocusPointOnDevice(device: videoInput!.device, point: point)
+        if let device = videoInput?.device {
+            setFocusPointOnDevice(device: device, point: point)
+        }
     }
     
     // MARK: - Stop Camera
@@ -141,16 +143,8 @@ class YPVideoCaptureHelper: NSObject {
     // MARK: - Recording
     
     public func startRecording() {
-        let outputPath = "\(NSTemporaryDirectory())output.\(YPConfig.video.fileType.fileExtension)"
-        let outputURL = URL(fileURLWithPath: outputPath)
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: outputPath) {
-            do {
-                try fileManager.removeItem(atPath: outputPath)
-            } catch {
-                return
-            }
-        }
+        
+        let outputURL = YPVideoProcessor.makeVideoPathURL(temporaryFolder: true, fileName: "recordedVideoRAW")
         
         checkOrientation { [weak self] orientation in
             guard let strongSelf = self else {
@@ -194,7 +188,7 @@ class YPVideoCaptureHelper: NSObject {
             
             let timeScale: Int32 = 30 // FPS
             let maxDuration =
-                CMTimeMakeWithSeconds(self.videoRecordingTimeLimit, timeScale)
+                CMTimeMakeWithSeconds(self.videoRecordingTimeLimit, preferredTimescale: timeScale)
             videoOutput.maxRecordedDuration = maxDuration
             videoOutput.minFreeDiskSpaceLimit = 1024 * 1024
             if session.canAddOutput(videoOutput) {
@@ -273,7 +267,10 @@ extension YPVideoCaptureHelper: AVCaptureFileOutputRecordingDelegate {
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
-        didCaptureVideo?(outputFileURL)
+        YPVideoProcessor.cropToSquare(filePath: outputFileURL) { [weak self] url in
+            guard let _self = self, let u = url else { return }
+            _self.didCaptureVideo?(u)
+        }
         timer.invalidate()
     }
 }
